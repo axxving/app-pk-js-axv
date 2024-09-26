@@ -1,6 +1,7 @@
 import { PokemonServices } from "./services/PokemonServices";
 import { Store } from "./store/store";
 import { renderPokemonList } from "./presentation/pokemonList";
+import { loadMorePokemon } from "./use-cases/loadMorePokemon";
 
 // Inicializar el servicio y el store
 const pokemonService = new PokemonServices("https://pokeapi.co/api/v2");
@@ -24,8 +25,16 @@ export const pokemonApp = async (element) => {
       isLoading: false,
     });
 
-    // Renderizamos la lista de pokemon en el DOM
+    // Renderizamos la lista de pokemon
     renderPokemonList(pokemonList, element);
+
+    // Creamos un boton para cargar mas pokemon
+    const loadMoreButton = document.createElement("button");
+    loadMoreButton.textContent = "Cargar mas pokemon";
+    loadMoreButton.addEventListener("click", () => loadMorePokemon(element));
+
+    // Agreganos el boton al elemento de la app
+    element.appendChild(loadMoreButton);
   } catch (error) {
     // Actualizamos el estado en caso de obtener un error
     store.setState({
